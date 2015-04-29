@@ -21,7 +21,7 @@ import (
 )
 
 func is_palindrome(n string) bool {
-	for i := 0; i < (len(n) + 1) / 2; i++ {
+	for i := 0; i < (len(n)+1)/2; i++ {
 		if n[i:i+1] != n[len(n)-i-1:len(n)-i] {
 			return false
 		}
@@ -30,7 +30,7 @@ func is_palindrome(n string) bool {
 }
 
 func check(a int, b int) (bool, int, int) {
-	product := fmt.Sprintf("%d", a * b)
+	product := fmt.Sprintf("%d", a*b)
 	if is_palindrome(product) {
 		return true, a, b
 	}
@@ -43,13 +43,13 @@ func main() {
 	var a, b int
 
 Loop:
-	for sum := max * 2; sum >= 2 * min; sum-- {
-		if sum > max + min {
+	for sum := max * 2; sum >= 2*min; sum-- {
+		if sum > max+min {
 			a, b = sum-max, max
 		} else {
 			a, b = min, sum-min
 		}
-		for{
+		for {
 			t, c, d := check(a, b)
 			if t {
 				fmt.Printf("%d*%d=%d\n", c, d, c*d)
