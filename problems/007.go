@@ -12,22 +12,22 @@ import (
 )
 
 type PrimeGenerator struct {
-	primes []uint64
-	current []uint64
-	n uint64
+	primes    []uint64
+	current   []uint64
+	n         uint64
 	threshold uint64
 }
 
 func NewPrimeGenerator() *PrimeGenerator {
 	return &PrimeGenerator{
-		primes: make([]uint64, 0),
-		current: make([]uint64, 0),
-		n: 2,
+		primes:    make([]uint64, 0),
+		current:   make([]uint64, 0),
+		n:         2,
 		threshold: uint64(math.Sqrt(2)),
 	}
 }
 
-func (p *PrimeGenerator)Next() uint64 {
+func (p *PrimeGenerator) Next() uint64 {
 	if p.n == 2 {
 		p.primes = append(p.primes, 2)
 		p.current = append(p.current, 2)
@@ -37,12 +37,14 @@ func (p *PrimeGenerator)Next() uint64 {
 
 	for {
 		t := p.loop_next()
-		if t { break}
+		if t {
+			break
+		}
 	}
 	return p.n - 2
 }
 
-func (p *PrimeGenerator)loop_next() bool {
+func (p *PrimeGenerator) loop_next() bool {
 	prime := true
 CurrentLoop:
 	for i, c := range p.current {
