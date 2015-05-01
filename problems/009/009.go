@@ -33,7 +33,7 @@ func main() {
 Search:
 	for c := N; c > 1; c-- {
 		for b := 1; b <= c; b++ {
-			if b + c >= N {
+			if b+c >= N {
 				break
 			}
 			a := N - b - c
@@ -41,7 +41,7 @@ Search:
 				continue
 			}
 			if a*a+b*b == c*c {
-				fmt.Printf("%d*%d*%d=%d\n",a, b, c, a*b*c)
+				fmt.Printf("%d*%d*%d=%d\n", a, b, c, a*b*c)
 				break Search
 			}
 		}
