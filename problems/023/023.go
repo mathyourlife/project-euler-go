@@ -18,6 +18,16 @@ is less than this limit.
 
 Find the sum of all the positive integers which cannot be written
 as the sum of two abundant numbers.
+
+Steps:
+
+1) Create prime number generator
+2) Use the png to create prime factorizations for all numbers 2 -> 28123
+3) Based on prime factorizations, create lists of divisors for all numbers 2 -> 28123
+4) Locate all abundant numbers between 2 -> 28123
+5) Calculate sums of all pairs of abundant numbers from 4)
+6) Sum the numbers between 1 and 28123 that are not in the list from 5)
+
 */
 
 package main
@@ -54,8 +64,7 @@ func divisors(n uint64, pf *primefactorization.PrimeFactorization) []uint64 {
 
 func main() {
 
-	N := uint64(43)
-	N = uint64(28123)
+	N := uint64(28123)
 
 	pf := primefactorization.NewPrimeFactorization()
 
