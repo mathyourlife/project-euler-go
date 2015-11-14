@@ -98,7 +98,7 @@ func main() {
 	for i := 3; i < 1000000; i++ {
 		b := NewBigInt(i)
 		check := 0
-		for _, j := range(b.n) {
+		for _, j := range b.n {
 			check += f[j]
 		}
 		if b.Compare(NewBigInt(check)) {

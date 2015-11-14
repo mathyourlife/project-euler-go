@@ -12,15 +12,15 @@ How many circular primes are there below one million?
 
 package main
 
-import(
-  "fmt"
-  "github.com/mathyourlife/lt3maths/prime"
-  "math"
+import (
+	"fmt"
+	"github.com/mathyourlife/lt3maths/prime"
+	"math"
 )
 
 func place_values(n uint64) []int {
-  pv := []int{int(n)}
- 	for i := 0; i < len(pv); i++ {
+	pv := []int{int(n)}
+	for i := 0; i < len(pv); i++ {
 		if pv[i] > 9 {
 			if i == len(pv)-1 {
 				pv = append(pv, 0)
@@ -34,14 +34,15 @@ func place_values(n uint64) []int {
 }
 
 func is_desc(pv []int) bool {
- 	for i := 0; i < len(pv) - 1; i++ {
+	for i := 0; i < len(pv)-1; i++ {
 		if pv[i] > pv[i+1] {
 			return false
-	}}
+		}
+	}
 	return true
 }
 
-func main () {
+func main() {
 	// Initialize the generator
 	is_prime := map[int]bool{}
 	p := prime.NewPrimeGenerator()
@@ -63,10 +64,10 @@ func main () {
 			// Generate the circular numbers and check if they are prime
 			circular := 0
 			for b := 0; b < len(pv); b++ {
-				idx := (a+b) % (len(pv))
+				idx := (a + b) % (len(pv))
 				circular += pv[idx] * int(math.Pow(10, float64(b)))
 			}
-			if ! is_prime[circular] {
+			if !is_prime[circular] {
 				is_circular = false
 				break
 			}

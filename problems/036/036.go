@@ -12,9 +12,9 @@ leading zeros.)
 
 package main
 
-import(
-  "fmt"
-  "strconv"
+import (
+	"fmt"
+	"strconv"
 )
 
 func is_palindrome(n string) bool {
