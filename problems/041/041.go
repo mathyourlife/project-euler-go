@@ -54,7 +54,7 @@ func go_is_pandigital(ch_primes chan uint64, ch_ans chan uint64) {
 	var pandigital uint64
 
 	for {
-		n = <- ch_primes
+		n = <-ch_primes
 		// Due to divisibility by 3 rule (sum of digits x of 3), pandigital
 		// primes can't be:
 		// 12=3         2 digits
@@ -90,6 +90,6 @@ func main() {
 	go go_primes(ch_primes)
 	go go_is_pandigital(ch_primes, ch_ans)
 
-	n := <- ch_ans
+	n := <-ch_ans
 	fmt.Println(n)
 }
