@@ -25,6 +25,34 @@ hundred natural numbers and the square of the sum.
 `
 }
 
+// (1 + 2 + 3 + 4)^2 - (1^2 + 2^2 + 3^2 + 4^2)
+// 4 : 1*4 | 2*4 | 3*4 |
+// 3 : 1*3 | 2*3 |     | 4*3
+// 2 : 1*2 |     | 3*2 | 4*2
+// 1 :     | 2*1 | 3*1 | 4*1
+//      1     2     3     4
 func (p *SumSquareDifference) Solve() (string, error) {
-	return fmt.Sprintf("%d", 0), nil
+	max := 100
+	min := 1
+	var a, b int
+
+	total := 0
+	for sum := max * 2; sum >= 2*min; sum-- {
+		if sum > max+min {
+			a, b = sum-max, max
+		} else {
+			a, b = min, sum-min
+		}
+		for {
+			if a != b {
+				total += a * b
+			}
+			a++
+			b--
+			if a > max || b < min {
+				break
+			}
+		}
+	}
+	return fmt.Sprintf("%d", total), nil
 }
