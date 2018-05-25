@@ -74,21 +74,21 @@ package main
 // 	return false
 // }
 
-// func main() {
-// 	fmt.Println("Pandigital multiples")
-// 	lp := lexperm.LexPerm{}
-// 	digits := []int{9, 8, 7, 6, 5, 4, 3, 2, 1}
-// 	for {
+func main() {
+	// 	fmt.Println("Pandigital multiples")
+	// 	lp := lexperm.LexPerm{}
+	// 	digits := []int{9, 8, 7, 6, 5, 4, 3, 2, 1}
+	// 	for {
 
-// 		if is_concat_prod(digits) {
-// 			fmt.Println("Found it")
-// 			fmt.Println(digits)
-// 			break
-// 		}
+	// 		if is_concat_prod(digits) {
+	// 			fmt.Println("Found it")
+	// 			fmt.Println(digits)
+	// 			break
+	// 		}
 
-// 		more := lp.Prev(digits)
-// 		if !more {
-// 			break
-// 		}
-// 	}
-// }
+	// 		more := lp.Prev(digits)
+	// 		if !more {
+	// 			break
+	// 		}
+	// 	}
+}
