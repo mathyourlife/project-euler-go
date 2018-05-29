@@ -19,7 +19,7 @@ func TestSolutions(t *testing.T) {
 		{&LargestProductInASeries{}, "23514624000"},
 		{&SpecialPythagoreanTriplet{}, "31875000"},
 		{&SummationOfPrimes{}, "142913828922"},
-		// 70600674
+		{&LargestProductInAGrid{}, "70600674"},
 	}
 
 	for _, solution := range solutions {
