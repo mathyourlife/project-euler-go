@@ -17,7 +17,7 @@ func TestSolutions(t *testing.T) {
 		{&SumSquareDifference{}, "25164150"},
 		{&TenThousandFirstPrime{}, "104743"},
 		{&LargestProductInASeries{}, "23514624000"},
-		// 31875000
+		{&SpecialPythagoreanTriplet{}, "31875000"},
 		// 142913828922
 		// 70600674
 	}
