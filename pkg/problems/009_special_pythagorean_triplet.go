@@ -7,7 +7,7 @@ import (
 type SpecialPythagoreanTriplet struct{}
 
 func (p *SpecialPythagoreanTriplet) ID() int {
-	return 8
+	return 9
 }
 
 func (p *SpecialPythagoreanTriplet) Text() string {
