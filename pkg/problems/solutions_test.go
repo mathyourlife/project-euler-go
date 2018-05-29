@@ -18,7 +18,7 @@ func TestSolutions(t *testing.T) {
 		{&TenThousandFirstPrime{}, "104743"},
 		{&LargestProductInASeries{}, "23514624000"},
 		{&SpecialPythagoreanTriplet{}, "31875000"},
-		// 142913828922
+		{&SummationOfPrimes{}, "142913828922"},
 		// 70600674
 	}
 
