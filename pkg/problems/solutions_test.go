@@ -15,6 +15,11 @@ func TestSolutions(t *testing.T) {
 		{&LargestPalindromeProduct{}, "906609"},
 		{&SmallestMultiple{}, "232792560"},
 		{&SumSquareDifference{}, "25164150"},
+		{&TenThousandFirstPrime{}, "104743"},
+		// 23514624000
+		// 31875000
+		// 142913828922
+		// 70600674
 	}
 
 	for _, solution := range solutions {
