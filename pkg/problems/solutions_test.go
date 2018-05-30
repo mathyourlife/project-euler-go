@@ -25,7 +25,7 @@ func TestSolutions(t *testing.T) {
 		{&HighlyDivisibleTriangularNumber{}, "76576500"},
 		{&LargeSum{}, "5537376230"},
 		{&LongestCollatzSequence{}, "837799"},
-		// 137846528820
+		{&LatticePaths{}, "137846528820"},
 		// 1366
 		// 21124
 		// 1074
