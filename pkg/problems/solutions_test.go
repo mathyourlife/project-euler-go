@@ -23,7 +23,7 @@ func TestSolutions(t *testing.T) {
 		{&SummationOfPrimes{}, "142913828922"},
 		{&LargestProductInAGrid{}, "70600674"},
 		{&HighlyDivisibleTriangularNumber{}, "76576500"},
-		// 5537376230
+		{&LargeSum{}, "5537376230"},
 		// 837799
 		// 137846528820
 		// 1366
