@@ -26,7 +26,7 @@ func TestSolutions(t *testing.T) {
 		{&LargeSum{}, "5537376230"},
 		{&LongestCollatzSequence{}, "837799"},
 		{&LatticePaths{}, "137846528820"},
-		// 1366
+		{&PowerDigitSum{}, "1366"},
 		// 21124
 		// 1074
 		// 171

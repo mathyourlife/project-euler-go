@@ -1,10 +1,4 @@
-/*
-2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.
-
-What is the sum of the digits of the number 2^1000?
-*/
-
-package main
+package problems
 
 import (
 	"fmt"
@@ -15,9 +9,11 @@ type BigInt struct {
 }
 
 func NewBigInt(n int) *BigInt {
-	return &BigInt{
+	b := &BigInt{
 		n: []int{n},
 	}
+	b.Regroup()
+	return b
 }
 
 func (b *BigInt) Regroup() {
@@ -45,20 +41,4 @@ func (b *BigInt) Print() string {
 		s = fmt.Sprintf("%d%s", d, s)
 	}
 	return s
-}
-
-func main() {
-
-	n := NewBigInt(1)
-
-	for i := 0; i < 1000; i++ {
-		n.Mul(2)
-		n.Regroup()
-	}
-
-	sum := 0
-	for _, d := range n.n {
-		sum += d
-	}
-	fmt.Println(sum)
 }
