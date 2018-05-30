@@ -24,7 +24,7 @@ func TestSolutions(t *testing.T) {
 		{&LargestProductInAGrid{}, "70600674"},
 		{&HighlyDivisibleTriangularNumber{}, "76576500"},
 		{&LargeSum{}, "5537376230"},
-		// 837799
+		{&LongestCollatzSequence{}, "837799"},
 		// 137846528820
 		// 1366
 		// 21124
