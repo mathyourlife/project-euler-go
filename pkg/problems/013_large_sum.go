@@ -1,5 +1,22 @@
-/*
-Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.
+package problems
+
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+type LargeSum struct {
+	grid [][]int64
+}
+
+func (p *LargeSum) ID() int {
+	return 13
+}
+
+func (p *LargeSum) Text() string {
+	return `Work out the first ten digits of the sum of the
+following one-hundred 50-digit numbers.
 
 37107287533902102798797998220837590246510135740250
 46376937677490009712648124896970078050417018260538
@@ -101,20 +118,12 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
 72107838435069186155435662884062257473692284509516
 20849603980134001723930671666823555245252804609722
 53503534226472524250874054075591789781264330331690
+`
+}
 
-*/
-
-package main
-
-import (
-	"fmt"
-	"strconv"
-	"strings"
-)
-
-func main() {
-
-	block := `37107287533902102798797998220837590246510135740250
+func (p *LargeSum) Solve() (string, error) {
+	p.loadGrid(`
+37107287533902102798797998220837590246510135740250
 46376937677490009712648124896970078050417018260538
 74324986199524741059474233309513058123726617309629
 91942213363574161572522430563301811072406154908250
@@ -213,44 +222,46 @@ func main() {
 77158542502016545090413245809786882778948721859617
 72107838435069186155435662884062257473692284509516
 20849603980134001723930671666823555245252804609722
-53503534226472524250874054075591789781264330331690`
+53503534226472524250874054075591789781264330331690
+`)
 
-	grid := load_block(block)
-
-	sum := make([]int64, len(grid[0]))
-	for i := 0; i < len(grid[0]); i++ {
-		sum[i] = int64(0)
-		for j := 0; j < len(grid); j++ {
-			sum[i] += grid[j][i]
+	sum := make([]int64, len(p.grid[0]))
+	for col := 0; col < len(p.grid[0]); col++ {
+		sum[col] = int64(0)
+		for row := 0; row < len(p.grid); row++ {
+			sum[col] += p.grid[row][col]
 		}
 	}
 
-	for i := len(sum) - 1; i >= 0; i-- {
-		if sum[i] > 9 && i > 0 {
-			regroup := sum[i] / 10
-			sum[i-1] += regroup
-			sum[i] = sum[i] % 10
+	for col := len(sum) - 1; col >= 0; col-- {
+		if sum[col] > 9 && col > 0 {
+			regroup := sum[col] / 10
+			sum[col-1] += regroup
+			sum[col] = sum[col] % 10
 		}
 	}
 
-	final := ""
+	sumStr := ""
 	for _, v := range sum {
-		final = fmt.Sprintf("%s%d", final, v)
+		sumStr = fmt.Sprintf("%s%d", sumStr, v)
 	}
-	fmt.Println(final[0:10])
+
+	return sumStr[:10], nil
 }
 
-func load_block(block string) [][]int64 {
-	ns := strings.Split(block, "\n")
-	grid := make([][]int64, len(ns))
+func (p *LargeSum) loadGrid(s string) {
+	rows := strings.Split(strings.TrimSpace(s), "\n")
+	p.grid = make([][]int64, len(rows))
 
-	for j := 0; j < len(ns); j++ {
-		row := make([]int64, len(ns[0]))
-		for i := 0; i < len(ns[j]); i++ {
-			n, _ := strconv.ParseInt(ns[j][i:i+1], 10, 5)
-			row[i] = n
+	for row := 0; row < len(rows); row++ {
+		entry := make([]int64, len(rows[0]))
+		for col := 0; col < len(rows[row]); col++ {
+			n, err := strconv.ParseInt(rows[row][col:col+1], 10, 5)
+			if err != nil {
+				panic(err)
+			}
+			entry[col] = n
 		}
-		grid[j] = row
+		p.grid[row] = entry
 	}
-	return grid
 }
