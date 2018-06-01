@@ -28,7 +28,7 @@ func TestSolutions(t *testing.T) {
 		{&LatticePaths{}, "137846528820"},
 		{&PowerDigitSum{}, "1366"},
 		{&NumberLetterCounts{}, "21124"},
-		// 1074
+		{&MaximumPathSumI{}, "1074"},
 		// 171
 		// 648
 		// 31626

@@ -1,6 +1,23 @@
-/*
-By starting at the top of the triangle below and moving to adjacent
-numbers on the row below, the maximum total from top to bottom is 23.
+package problems
+
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+type MaximumPathSumI struct {
+	grid [][]int64
+}
+
+func (p *MaximumPathSumI) ID() int {
+	return 18
+}
+
+func (p *MaximumPathSumI) Text() string {
+	return `By starting at the top of the triangle below and moving
+to adjacent numbers on the row below, the maximum total from top to
+bottom is 23.
 
    3
   7 4
@@ -31,19 +48,11 @@ NOTE: As there are only 16384 routes, it is possible to solve this problem
 by trying every route. However, Problem 67, is the same challenge with a
 triangle containing one-hundred rows; it cannot be solved by brute force,
 and requires a clever method! ;o)
-*/
+`
+}
 
-package main
-
-import (
-	"fmt"
-	"strconv"
-	"strings"
-)
-
-func main() {
-
-	raw := `75
+func (p *MaximumPathSumI) Solve() (string, error) {
+	p.load(`75
 95 64
 17 47 82
 18 35 87 10
@@ -57,37 +66,40 @@ func main() {
 70 11 33 28 77 73 17 78 39 68 17 57
 91 71 52 38 17 14 91 43 58 50 27 29 48
 63 66 04 68 89 53 67 30 73 16 69 87 40 31
-04 62 98 27 23 09 70 98 73 93 38 53 60 04 23`
-
-	tri := load_triangle(raw)
+04 62 98 27 23 09 70 98 73 93 38 53 60 04 23`)
 
 	// Collapse rows from the bottom up using the larger number
-	for r := 0; r < len(tri)-1; r++ {
-		for i := 0; i < len(tri[r])-1; i++ {
-			if tri[r][i] > tri[r][i+1] {
-				tri[r+1][i] += tri[r][i]
+	// For the bottom left corner
+	//   63
+	// 04  62
+	// The 62 is larger so gets added to the 63 above
+	for row := 0; row < len(p.grid)-1; row++ {
+		for col := 0; col < len(p.grid[row])-1; col++ {
+			if p.grid[row][col] > p.grid[row][col+1] {
+				p.grid[row+1][col] += p.grid[row][col]
 			} else {
-				tri[r+1][i] += tri[r][i+1]
+				p.grid[row+1][col] += p.grid[row][col+1]
 			}
 		}
 	}
-	fmt.Println(tri[len(tri)-1][0])
 
+	return fmt.Sprintf("%d", p.grid[len(p.grid)-1][0]), nil
 }
 
-func load_triangle(raw string) [][]int64 {
-	rows := strings.Split(raw, "\n")
+func (p *MaximumPathSumI) load(s string) {
+	rows := strings.Split(s, "\n")
 
-	tri := [][]int64{}
+	p.grid = make([][]int64, 0, len(rows))
 	for i := len(rows) - 1; i >= 0; i-- {
 		r := []int64{}
 		rnums := strings.Split(rows[i], " ")
 		for _, ns := range rnums {
-			n, _ := strconv.ParseInt(ns, 10, 16)
+			n, err := strconv.ParseInt(ns, 10, 16)
+			if err != nil {
+				panic(err)
+			}
 			r = append(r, n)
 		}
-		tri = append(tri, r)
-
+		p.grid = append(p.grid, r)
 	}
-	return tri
 }
