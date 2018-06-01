@@ -46,10 +46,6 @@ func (p *PrimeGenerator) sieveOfEratosthenes() {
 	var isPrime bool
 
 	for {
-		// log.Println("----------------")
-		// log.Println("n", p.n)
-		// log.Println("primes", p.primes)
-		// log.Println("sieve", p.sieve)
 		p.n += 2
 		isPrime = true
 	SieveLoop:

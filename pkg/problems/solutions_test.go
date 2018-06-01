@@ -31,7 +31,7 @@ func TestSolutions(t *testing.T) {
 		{&MaximumPathSumI{}, "1074"},
 		{&CountingSundays{}, "171"},
 		{&FactorialDigitSum{}, "648"},
-		// 31626
+		{&AmicableNumbers{}, "31626"},
 		// 871198282
 		// 4179871
 		// 2783915460
