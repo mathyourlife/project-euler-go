@@ -26,12 +26,12 @@ func TestSolutions(t *testing.T) {
 		{&LargeSum{}, "5537376230"},
 		{&LongestCollatzSequence{}, "837799"},
 		{&LatticePaths{}, "137846528820"},
-		// 1366
-		// 21124
-		// 1074
-		// 171
-		// 648
-		// 31626
+		{&PowerDigitSum{}, "1366"},
+		{&NumberLetterCounts{}, "21124"},
+		{&MaximumPathSumI{}, "1074"},
+		{&CountingSundays{}, "171"},
+		{&FactorialDigitSum{}, "648"},
+		{&AmicableNumbers{}, "31626"},
 		// 871198282
 		// 4179871
 		// 2783915460
