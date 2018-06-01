@@ -29,7 +29,7 @@ func TestSolutions(t *testing.T) {
 		{&PowerDigitSum{}, "1366"},
 		{&NumberLetterCounts{}, "21124"},
 		{&MaximumPathSumI{}, "1074"},
-		// 171
+		{&CountingSundays{}, "171"},
 		// 648
 		// 31626
 		// 871198282
