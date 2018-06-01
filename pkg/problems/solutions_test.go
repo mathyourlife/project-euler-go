@@ -30,7 +30,7 @@ func TestSolutions(t *testing.T) {
 		{&NumberLetterCounts{}, "21124"},
 		{&MaximumPathSumI{}, "1074"},
 		{&CountingSundays{}, "171"},
-		// 648
+		{&FactorialDigitSum{}, "648"},
 		// 31626
 		// 871198282
 		// 4179871
