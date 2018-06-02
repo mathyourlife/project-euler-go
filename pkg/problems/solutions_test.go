@@ -33,7 +33,7 @@ func TestSolutions(t *testing.T) {
 		{&FactorialDigitSum{}, "648"},
 		{&AmicableNumbers{}, "31626"},
 		{&NameScores{namesFile: "testdata/p022_names.txt"}, "871198282"},
-		// 4179871
+		{&NonAbundantSums{}, "4179871"},
 		// 2783915460
 	}
 

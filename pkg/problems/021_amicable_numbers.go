@@ -40,23 +40,10 @@ func (p *AmicableNumbers) Solve() (string, error) {
 }
 
 func (p *AmicableNumbers) amicable(n uint64) uint64 {
-	pf := primeFactors(n)
-
-	divisors := []uint64{1}
-	for factor, exponent := range pf {
-		multiple := uint64(1)
-		newDivisors := []uint64{}
-		for e := 1; e <= exponent; e++ {
-			multiple *= factor
-			for _, divisor := range divisors {
-				newDivisors = append(newDivisors, divisor*multiple)
-			}
-		}
-		divisors = append(divisors, newDivisors...)
-	}
+	ds := properDivisors(n)
 
 	amicable := uint64(0)
-	for _, v := range divisors[:len(divisors)-1] {
+	for _, v := range ds {
 		amicable += v
 	}
 	return amicable

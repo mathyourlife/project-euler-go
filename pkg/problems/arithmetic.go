@@ -42,3 +42,26 @@ func (b *BigInt) Print() string {
 	}
 	return s
 }
+
+func divisors(n uint64) []uint64 {
+	pf := primeFactors(n)
+
+	divisors := []uint64{1}
+	for factor, exponent := range pf {
+		multiple := uint64(1)
+		newDivisors := []uint64{}
+		for e := 1; e <= exponent; e++ {
+			multiple *= factor
+			for _, divisor := range divisors {
+				newDivisors = append(newDivisors, divisor*multiple)
+			}
+		}
+		divisors = append(divisors, newDivisors...)
+	}
+	return divisors
+}
+
+func properDivisors(n uint64) []uint64 {
+	d := divisors(n)
+	return d[:len(d)-1]
+}
