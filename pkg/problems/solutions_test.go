@@ -36,7 +36,7 @@ func TestSolutions(t *testing.T) {
 		{&NonAbundantSums{}, "4179871"},
 		{&LexicographicPermutations{}, "2783915460"},
 		{&ThousandDigitFibonacciNumber{}, "4782"},
-		// 983
+		{&ReciprocalCycles{}, "983"},
 		// -59231
 		// 669171001
 		// 9183
