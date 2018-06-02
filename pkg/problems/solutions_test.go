@@ -34,7 +34,7 @@ func TestSolutions(t *testing.T) {
 		{&AmicableNumbers{}, "31626"},
 		{&NameScores{namesFile: "testdata/p022_names.txt"}, "871198282"},
 		{&NonAbundantSums{}, "4179871"},
-		// 2783915460
+		{&LexicographicPermutations{}, "2783915460"},
 	}
 
 	eulerProblem := os.Getenv("EULER_PROBLEM")
