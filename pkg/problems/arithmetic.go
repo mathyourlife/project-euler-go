@@ -35,10 +35,43 @@ func (b *BigInt) Mul(f int) {
 	}
 }
 
+func (b *BigInt) AddBigInt(n *BigInt) {
+	for i := 0; i < len(n.n) && i < len(b.n); i++ {
+		b.n[i] += n.n[i]
+	}
+	for i := len(b.n); i < len(n.n); i++ {
+		b.n = append(b.n, n.n[i])
+	}
+}
+
 func (b *BigInt) Print() string {
+	b.Regroup()
 	s := ""
 	for _, d := range b.n {
 		s = fmt.Sprintf("%d%s", d, s)
 	}
 	return s
+}
+
+func divisors(n uint64) []uint64 {
+	pf := primeFactors(n)
+
+	divisors := []uint64{1}
+	for factor, exponent := range pf {
+		multiple := uint64(1)
+		newDivisors := []uint64{}
+		for e := 1; e <= exponent; e++ {
+			multiple *= factor
+			for _, divisor := range divisors {
+				newDivisors = append(newDivisors, divisor*multiple)
+			}
+		}
+		divisors = append(divisors, newDivisors...)
+	}
+	return divisors
+}
+
+func properDivisors(n uint64) []uint64 {
+	d := divisors(n)
+	return d[:len(d)-1]
 }

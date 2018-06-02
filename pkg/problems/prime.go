@@ -1,8 +1,6 @@
 package problems
 
-import (
-// "log"
-)
+import ()
 
 var (
 	pg *PrimeGenerator
@@ -16,19 +14,27 @@ func GetPrime(n int) uint64 {
 	return pg.Get(n)
 }
 
+func IsPrime(n uint64) bool {
+	return pg.IsPrime(n)
+}
+
 type PrimeGenerator struct {
-	primes []uint64
-	sieve  []uint64
-	n      uint64
+	primes  []uint64
+	isPrime map[uint64]bool
+	sieve   []uint64
+	n       uint64
 }
 
 func NewPrimeGenerator() *PrimeGenerator {
 	p := &PrimeGenerator{
-		primes: make([]uint64, 0, 100),
-		sieve:  make([]uint64, 0, 100),
+		primes:  make([]uint64, 0, 100),
+		sieve:   make([]uint64, 0, 100),
+		isPrime: map[uint64]bool{},
 	}
 	p.primes = append(p.primes, 2, 3)
 	p.sieve = append(p.sieve, 2, 3)
+	p.isPrime[2] = true
+	p.isPrime[3] = true
 	p.n = 3
 	return p
 }
@@ -66,4 +72,15 @@ func (p *PrimeGenerator) sieveOfEratosthenes() {
 	}
 	p.primes = append(p.primes, p.n)
 	p.sieve = append(p.sieve, p.n)
+	p.isPrime[p.n] = true
+}
+
+func (p *PrimeGenerator) IsPrime(n uint64) bool {
+	for {
+		if p.primes[len(p.primes)-1] >= n {
+			break
+		}
+		p.Get(len(p.primes))
+	}
+	return p.isPrime[n]
 }
