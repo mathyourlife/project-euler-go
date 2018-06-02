@@ -18,3 +18,13 @@ func TestPrimeGenerator(t *testing.T) {
 		t.Errorf("the 1000th prime was calculated as %d instead of 7919", thou)
 	}
 }
+
+func TestPrimeGenerator_IsPrime(t *testing.T) {
+	p := NewPrimeGenerator()
+	if !p.IsPrime(19) {
+		t.Errorf("did not determine that 19 was prime")
+	}
+	if p.IsPrime(100) {
+		t.Errorf("thought that 100 was a prime")
+	}
+}
