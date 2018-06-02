@@ -35,6 +35,36 @@ func TestSolutions(t *testing.T) {
 		{&NameScores{namesFile: "testdata/p022_names.txt"}, "871198282"},
 		{&NonAbundantSums{}, "4179871"},
 		{&LexicographicPermutations{}, "2783915460"},
+		{&ThousandDigitFibonacciNumber{}, "4782"},
+		// 983
+		// -59231
+		// 669171001
+		// 9183
+		// 443839
+		// 73682
+		// 45228
+		// 100
+		// 40730
+		// 55
+		// 872187
+		// 748317
+		// 932718654
+		// 840
+		// 210
+		// 7652413
+		// 162
+		// 16695334890
+		// 5482660
+		// 1533776805
+		// 5777
+		// 134043
+		// 9110846700
+		// 296962999629
+		// 997651
+		// 121313
+		// 142857
+		// 4075
+		// 376
 	}
 
 	eulerProblem := os.Getenv("EULER_PROBLEM")

@@ -14,6 +14,14 @@ func TestBigInt(t *testing.T) {
 	}
 }
 
+func TestBigInt_AddBigInt(t *testing.T) {
+	b := NewBigInt(39)
+	b.AddBigInt(NewBigInt(4123))
+	if b.Print() != "4162" {
+		t.Errorf("sum of big ints is not correct: %s", b.Print())
+	}
+}
+
 func TestDivisors(t *testing.T) {
 	d := []int{}
 
