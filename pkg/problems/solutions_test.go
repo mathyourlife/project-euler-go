@@ -39,7 +39,7 @@ func TestSolutions(t *testing.T) {
 		{&ReciprocalCycles{}, "983"},
 		{&QuadraticPrimes{}, "-59231"},
 		{&NumberSpiralDiagonals{}, "669171001"},
-		// 9183
+		{&DistinctPowers{}, "9183"},
 		// 443839
 		// 73682
 		// 45228
