@@ -38,7 +38,7 @@ func TestSolutions(t *testing.T) {
 		{&ThousandDigitFibonacciNumber{}, "4782"},
 		{&ReciprocalCycles{}, "983"},
 		{&QuadraticPrimes{}, "-59231"},
-		// 669171001
+		{&NumberSpiralDiagonals{}, "669171001"},
 		// 9183
 		// 443839
 		// 73682
