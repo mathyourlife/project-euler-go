@@ -41,7 +41,7 @@ func TestSolutions(t *testing.T) {
 		{&NumberSpiralDiagonals{}, "669171001"},
 		{&DistinctPowers{}, "9183"},
 		{&DigitFifthPowers{}, "443839"},
-		// 73682
+		{&CoinSums{}, "73682"},
 		// 45228
 		// 100
 		// 40730
