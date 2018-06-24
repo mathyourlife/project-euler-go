@@ -42,7 +42,7 @@ func TestSolutions(t *testing.T) {
 		{&DistinctPowers{}, "9183"},
 		{&DigitFifthPowers{}, "443839"},
 		{&CoinSums{}, "73682"},
-		// 45228
+		{&PandigitalProducts{}, "45228"},
 		// 100
 		// 40730
 		// 55
