@@ -40,10 +40,10 @@ func TestSolutions(t *testing.T) {
 		{&QuadraticPrimes{}, "-59231"},
 		{&NumberSpiralDiagonals{}, "669171001"},
 		{&DistinctPowers{}, "9183"},
-		// 443839
-		// 73682
-		// 45228
-		// 100
+		{&DigitFifthPowers{}, "443839"},
+		{&CoinSums{}, "73682"},
+		{&PandigitalProducts{}, "45228"},
+		{&DigitCancellingFractions{}, "100"},
 		// 40730
 		// 55
 		// 872187

@@ -59,8 +59,27 @@ func TestLCM(t *testing.T) {
 	for _, test := range tests {
 		v := lcm(test.ns)
 		if test.lcm != v {
-			t.Errorf("incorrect lcm %d of %v", v, test.lcm)
+			t.Errorf("incorrect lcm %d of %v", v, test.ns)
 		}
 	}
+}
 
+func TestGCF(t *testing.T) {
+	tests := []struct {
+		ns  []uint64
+		gcf uint64
+	}{
+		{[]uint64{10, 25}, 5},
+		{[]uint64{25, 10}, 5},
+		{[]uint64{27, 10}, 1},
+		{[]uint64{36, 27}, 9},
+		{[]uint64{36}, 36},
+	}
+
+	for _, test := range tests {
+		v := gcf(test.ns)
+		if test.gcf != v {
+			t.Errorf("incorrect gcf %d of %v", v, test.ns)
+		}
+	}
 }
