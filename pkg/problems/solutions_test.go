@@ -45,7 +45,7 @@ func TestSolutions(t *testing.T) {
 		{&PandigitalProducts{}, "45228"},
 		{&DigitCancellingFractions{}, "100"},
 		{&DigitFactorials{}, "40730"},
-		// 55
+		{&CircularPrimes{}, "55"},
 		// 872187
 		// 748317
 		// 932718654
