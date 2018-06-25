@@ -44,7 +44,7 @@ func TestSolutions(t *testing.T) {
 		{&CoinSums{}, "73682"},
 		{&PandigitalProducts{}, "45228"},
 		{&DigitCancellingFractions{}, "100"},
-		// 40730
+		{&DigitFactorials{}, "40730"},
 		// 55
 		// 872187
 		// 748317
