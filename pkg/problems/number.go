@@ -2,6 +2,7 @@ package problems
 
 import (
 	"fmt"
+	"math"
 )
 
 type Sign int
@@ -90,4 +91,11 @@ func (d Decimal) String() string {
 	}
 
 	return fmt.Sprintf("%d.%s(%s)", d.whole, decimalStr, repetendStr)
+}
+
+func numDigits(n uint64) int {
+	if n == 0 {
+		return 1
+	}
+	return int(math.Log10(float64(n)) + 1)
 }
