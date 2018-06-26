@@ -49,7 +49,7 @@ func TestSolutions(t *testing.T) {
 		{&DoubleBasePalindromes{}, "872187"},
 		{&TrunctablePrimes{}, "748317"},
 		{&PandigitalMultiples{}, "932718654"},
-		// 840
+		{&IntegerRightTriangles{}, "840"},
 		// 210
 		// 7652413
 		// 162
@@ -67,12 +67,14 @@ func TestSolutions(t *testing.T) {
 		// 376
 	}
 
+	found := false
 	eulerProblem := os.Getenv("EULER_PROBLEM")
 
 	for _, solution := range solutions {
 		if eulerProblem != "" && fmt.Sprintf("%d", solution.Problem.ID()) != eulerProblem {
 			continue
 		}
+		found = true
 		s, err := solution.Problem.Solve()
 		if err != nil {
 			t.Error(err)
@@ -80,5 +82,9 @@ func TestSolutions(t *testing.T) {
 		if s != solution.Expected {
 			t.Errorf("Problem: %d Expected solution: %s got: %s", solution.Problem.ID(), solution.Expected, s)
 		}
+	}
+
+	if !found && eulerProblem != "" {
+		t.Errorf("unable to locate test case for problem %s", eulerProblem)
 	}
 }
