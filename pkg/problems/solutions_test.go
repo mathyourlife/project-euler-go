@@ -47,7 +47,7 @@ func TestSolutions(t *testing.T) {
 		{&DigitFactorials{}, "40730"},
 		{&CircularPrimes{}, "55"},
 		{&DoubleBasePalindromes{}, "872187"},
-		// 748317
+		{&TrunctablePrimes{}, "748317"},
 		// 932718654
 		// 840
 		// 210
