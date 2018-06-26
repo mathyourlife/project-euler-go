@@ -23,9 +23,6 @@ How many circular primes are there below one million?
 }
 
 func (p *CircularPrimes) Solve() (string, error) {
-	numDigits := func(n uint64) int {
-		return int(math.Log10(float64(n)) + 1)
-	}
 
 	rotate := func(n uint64) uint64 {
 		mod := n % 10

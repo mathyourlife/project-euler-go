@@ -50,14 +50,9 @@ func (p *DigitFifthPowers) Solve() (string, error) {
 	//  99,999 => 9^4 + 9^4 + 9^4 + 9^4 + 9^4 = 32805
 	// 999,999 => 9^4 + 9^4 + 9^4 + 9^4 + 9^4 + 9^4 = 39366
 
-	// Simple function to return how many digits in an integer
-	numDigits := func(n int) int {
-		return int(math.Log10(float64(n)) + 1)
-	}
-
 	maxLen := 1
 	for {
-		if numDigits(p.powers[9]*maxLen) < maxLen {
+		if numDigits(uint64(p.powers[9]*maxLen)) < maxLen {
 			break
 		}
 		maxLen++

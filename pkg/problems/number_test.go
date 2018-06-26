@@ -17,3 +17,24 @@ func TestRational_ToDecimal(t *testing.T) {
 		t.Errorf("unexpected conversion from 1/29 to %s", d.String())
 	}
 }
+
+func TestNumDigits(t *testing.T) {
+	tests := []struct {
+		Value  uint64
+		Digits int
+	}{
+		{13, 2},
+		{0, 1},
+		{1, 1},
+		{9, 1},
+		{99999, 5},
+		{10000, 5},
+	}
+
+	for i, test := range tests {
+		if numDigits(test.Value) != test.Digits {
+			t.Errorf("test: %d Expected digits for %d: %d got: %d", i, test.Value, test.Digits, numDigits(test.Value))
+		}
+	}
+
+}
