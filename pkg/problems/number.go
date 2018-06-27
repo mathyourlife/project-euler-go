@@ -99,3 +99,30 @@ func numDigits(n uint64) int {
 	}
 	return int(math.Log10(float64(n)) + 1)
 }
+
+// IsPandigital determine if a number is pandigital up to
+// the number of digits.  A four digit number should
+// contain the digits 1,2,3,and 4 only once
+// and in any order.
+func IsPandigital(n uint64) bool {
+	var bit uint64
+	count := uint64(0)
+	tmp := uint64(0)
+	digits := uint64(0)
+	for {
+		if n == 0 {
+			break
+		}
+		bit = 1 << (n%10 - 1)
+		digits |= bit
+		count++
+		// If digits hasn't changed since last time,
+		// we've got a repeat digit, so not pandigital
+		if tmp == digits {
+			return false
+		}
+		tmp = digits
+		n /= 10
+	}
+	return digits == (1<<count)-1
+}
