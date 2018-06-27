@@ -36,5 +36,23 @@ func TestNumDigits(t *testing.T) {
 			t.Errorf("test: %d Expected digits for %d: %d got: %d", i, test.Value, test.Digits, numDigits(test.Value))
 		}
 	}
+}
 
+func TestIsPandigital(t *testing.T) {
+	tests := []struct {
+		Value  uint64
+		Result bool
+	}{
+		{1, true},
+		{2, false},
+		{746589321, true},
+		{465321, true},
+		{5465321, false},
+	}
+
+	for i, test := range tests {
+		if IsPandigital(test.Value) != test.Result {
+			t.Errorf("test: %d IsPandigital(%d) Expected result %t: got: %t", i, test.Value, test.Result, IsPandigital(test.Value))
+		}
+	}
 }
