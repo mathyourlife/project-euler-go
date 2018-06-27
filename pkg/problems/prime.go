@@ -1,6 +1,8 @@
 package problems
 
-import ()
+import (
+	"math"
+)
 
 var (
 	pg *PrimeGenerator
@@ -44,43 +46,78 @@ func (p *PrimeGenerator) Get(n int) uint64 {
 		if n < len(p.primes) {
 			return p.primes[n]
 		}
-		p.sieveOfEratosthenes()
+		next := p.sieveOfEratosthenes()
+		<-next
 	}
 }
 
-func (p *PrimeGenerator) sieveOfEratosthenes() {
-	var isPrime bool
+func (p *PrimeGenerator) sieveOfEratosthenes() <-chan bool {
+	done := make(chan bool)
 
-	for {
-		p.n += 2
-		isPrime = true
-	SieveLoop:
-		for i := 0; i < len(p.sieve); i++ {
-			for {
-				if p.sieve[i] > p.n {
-					break
-				} else if p.sieve[i] == p.n {
-					isPrime = false
-					break SieveLoop
+	go func() {
+		var isPrime bool
+
+		for {
+			p.n += 2
+			isPrime = true
+		SieveLoop:
+			for i := 0; i < len(p.sieve); i++ {
+				for {
+					if p.sieve[i] > p.n {
+						break
+					} else if p.sieve[i] == p.n {
+						isPrime = false
+						break SieveLoop
+					}
+					p.sieve[i] += p.primes[i]
 				}
-				p.sieve[i] += p.primes[i]
+			}
+			if isPrime {
+				break
 			}
 		}
-		if isPrime {
-			break
-		}
-	}
-	p.primes = append(p.primes, p.n)
-	p.sieve = append(p.sieve, p.n)
-	p.isPrime[p.n] = true
+		p.primes = append(p.primes, p.n)
+		p.sieve = append(p.sieve, p.n)
+		p.isPrime[p.n] = true
+		close(done)
+	}()
+	return done
 }
 
 func (p *PrimeGenerator) IsPrime(n uint64) bool {
+	// If we luck out and have already generated all
+	// the primes up to n
+	if n < p.n {
+		return p.isPrime[n]
+	}
+
+	limit := uint64(math.Sqrt(float64(n)))
+	// value was larger than the current list, but the sqrt of
+	// the value is within reach of the list.  Searching
+	// if generated primes are factors is usually faster
+	// than generating primes up to n
+	if limit < p.n {
+		idx := 0
+		for {
+			prime := p.Get(idx)
+			if prime > limit {
+				break
+			}
+			if n%prime == 0 {
+				return false
+			}
+			idx++
+		}
+		return true
+	}
+
+	// don't have enough primes generated to tell. generating
+	// up to `limit` and launching a recheck
 	for {
-		if p.primes[len(p.primes)-1] >= n {
+		prime := p.Get(len(p.primes))
+		if prime > limit {
 			break
 		}
-		p.Get(len(p.primes))
 	}
-	return p.isPrime[n]
+	return p.IsPrime(n)
 }
