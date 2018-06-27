@@ -51,7 +51,7 @@ func TestSolutions(t *testing.T) {
 		{&PandigitalMultiples{}, "932718654"},
 		{&IntegerRightTriangles{}, "840"},
 		{&ChampernowneConstant{}, "210"},
-		// 7652413
+		{&PandigitalPrime{}, "7652413"},
 		// 162
 		// 16695334890
 		// 5482660
