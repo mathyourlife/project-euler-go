@@ -75,13 +75,16 @@ func TestSolutions(t *testing.T) {
 			continue
 		}
 		found = true
-		s, err := solution.Problem.Solve()
-		if err != nil {
-			t.Error(err)
-		}
-		if s != solution.Expected {
-			t.Errorf("Problem: %d Expected solution: %s got: %s", solution.Problem.ID(), solution.Expected, s)
-		}
+
+		t.Run(fmt.Sprintf("problem %d", solution.Problem.ID()), func(t *testing.T) {
+			s, err := solution.Problem.Solve()
+			if err != nil {
+				t.Error(err)
+			}
+			if s != solution.Expected {
+				t.Errorf("Problem: %d Expected solution: %s got: %s", solution.Problem.ID(), solution.Expected, s)
+			}
+		})
 	}
 
 	if !found && eulerProblem != "" {
