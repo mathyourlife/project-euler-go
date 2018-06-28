@@ -54,7 +54,7 @@ func TestSolutions(t *testing.T) {
 		{&PandigitalPrime{}, "7652413"},
 		{&CodedTriangleNumbers{wordsFile: "testdata/p042_words.txt"}, "162"},
 		{&SubStringDivisibility{}, "16695334890"},
-		// 5482660
+		{&PentagonNumbers{}, "5482660"},
 		// 1533776805
 		// 5777
 		// 134043

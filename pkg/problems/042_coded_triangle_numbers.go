@@ -38,6 +38,7 @@ func (p *CodedTriangleNumbers) Solve() (string, error) {
 	maxTriangle := 0
 
 	// closure over the cache of triangle numbers map
+	// should probably switch over to N(N+1)/2 formula (meh)
 	isTriangle := func(n int) bool {
 		for {
 			if n <= maxTriangle {
