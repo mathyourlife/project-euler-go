@@ -52,7 +52,7 @@ func TestSolutions(t *testing.T) {
 		{&IntegerRightTriangles{}, "840"},
 		{&ChampernowneConstant{}, "210"},
 		{&PandigitalPrime{}, "7652413"},
-		// 162
+		{&CodedTriangleNumbers{wordsFile: "testdata/p042_words.txt"}, "162"},
 		// 16695334890
 		// 5482660
 		// 1533776805
