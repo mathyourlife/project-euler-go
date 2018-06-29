@@ -59,7 +59,7 @@ func TestSolutions(t *testing.T) {
 		{&GoldbachsOtherConjecture{}, "5777"},
 		{&DistinctPrimesFactors{}, "134043"},
 		{&SelfPowers{}, "9110846700"},
-		// 296962999629
+		{&PrimePermutations{}, "296962999629"},
 		// 997651
 		// 121313
 		// 142857
