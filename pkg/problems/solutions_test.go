@@ -57,7 +57,7 @@ func TestSolutions(t *testing.T) {
 		{&PentagonNumbers{}, "5482660"},
 		{&TriangularPentagonalAndHexagonal{}, "1533776805"},
 		{&GoldbachsOtherConjecture{}, "5777"},
-		// 134043
+		{&DistinctPrimesFactors{}, "134043"},
 		// 9110846700
 		// 296962999629
 		// 997651
