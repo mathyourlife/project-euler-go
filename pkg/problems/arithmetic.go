@@ -44,7 +44,7 @@ func (b *BigInt) AddBigInt(n *BigInt) {
 	}
 }
 
-func (b *BigInt) Print() string {
+func (b *BigInt) String() string {
 	b.Regroup()
 	s := ""
 	for _, d := range b.n {
