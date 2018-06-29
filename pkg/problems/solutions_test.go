@@ -52,15 +52,15 @@ func TestSolutions(t *testing.T) {
 		{&IntegerRightTriangles{}, "840"},
 		{&ChampernowneConstant{}, "210"},
 		{&PandigitalPrime{}, "7652413"},
-		// 162
-		// 16695334890
-		// 5482660
-		// 1533776805
-		// 5777
-		// 134043
-		// 9110846700
-		// 296962999629
-		// 997651
+		{&CodedTriangleNumbers{wordsFile: "testdata/p042_words.txt"}, "162"},
+		{&SubStringDivisibility{}, "16695334890"},
+		{&PentagonNumbers{}, "5482660"},
+		{&TriangularPentagonalAndHexagonal{}, "1533776805"},
+		{&GoldbachsOtherConjecture{}, "5777"},
+		{&DistinctPrimesFactors{}, "134043"},
+		{&SelfPowers{}, "9110846700"},
+		{&PrimePermutations{}, "296962999629"},
+		{&ConsecutivePrimeSum{}, "997651"},
 		// 121313
 		// 142857
 		// 4075
@@ -75,13 +75,16 @@ func TestSolutions(t *testing.T) {
 			continue
 		}
 		found = true
-		s, err := solution.Problem.Solve()
-		if err != nil {
-			t.Error(err)
-		}
-		if s != solution.Expected {
-			t.Errorf("Problem: %d Expected solution: %s got: %s", solution.Problem.ID(), solution.Expected, s)
-		}
+
+		t.Run(fmt.Sprintf("problem %d", solution.Problem.ID()), func(t *testing.T) {
+			s, err := solution.Problem.Solve()
+			if err != nil {
+				t.Error(err)
+			}
+			if s != solution.Expected {
+				t.Errorf("Problem: %d Expected solution: %s got: %s", solution.Problem.ID(), solution.Expected, s)
+			}
+		})
 	}
 
 	if !found && eulerProblem != "" {

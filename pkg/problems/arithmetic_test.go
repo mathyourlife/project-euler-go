@@ -9,16 +9,16 @@ func TestBigInt(t *testing.T) {
 	b := NewBigInt(99999)
 	b.Mul(2)
 	b.Regroup()
-	if b.Print() != "199998" {
-		t.Errorf("BigInt didn't calculate a product correctly expected 199998, got: %s", b.Print())
+	if b.String() != "199998" {
+		t.Errorf("BigInt didn't calculate a product correctly expected 199998, got: %s", b)
 	}
 }
 
 func TestBigInt_AddBigInt(t *testing.T) {
 	b := NewBigInt(39)
 	b.AddBigInt(NewBigInt(4123))
-	if b.Print() != "4162" {
-		t.Errorf("sum of big ints is not correct: %s", b.Print())
+	if b.String() != "4162" {
+		t.Errorf("sum of big ints is not correct: %s", b)
 	}
 }
 
