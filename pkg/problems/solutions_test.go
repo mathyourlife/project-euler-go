@@ -60,7 +60,7 @@ func TestSolutions(t *testing.T) {
 		{&DistinctPrimesFactors{}, "134043"},
 		{&SelfPowers{}, "9110846700"},
 		{&PrimePermutations{}, "296962999629"},
-		// 997651
+		{&ConsecutivePrimeSum{}, "997651"},
 		// 121313
 		// 142857
 		// 4075
