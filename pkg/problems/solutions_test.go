@@ -61,10 +61,10 @@ func TestSolutions(t *testing.T) {
 		{&SelfPowers{}, "9110846700"},
 		{&PrimePermutations{}, "296962999629"},
 		{&ConsecutivePrimeSum{}, "997651"},
-		// 121313
-		// 142857
-		// 4075
-		// 376
+		{&PrimeDigitReplacements{}, "121313"},
+		{&PermutedMultiples{}, "142857"},
+		{&CombinatoricSelections{}, "4075"},
+		{&PokerHands{pokerFile: "testdata/p054_poker.txt"}, "376"},
 	}
 
 	found := false
