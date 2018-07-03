@@ -62,7 +62,7 @@ func TestSolutions(t *testing.T) {
 		{&PrimePermutations{}, "296962999629"},
 		{&ConsecutivePrimeSum{}, "997651"},
 		{&PrimeDigitReplacements{}, "121313"},
-		// 142857
+		{&PermutedMultiples{}, "142857"},
 		// 4075
 		// 376
 	}
