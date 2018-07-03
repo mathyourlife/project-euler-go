@@ -64,7 +64,7 @@ func TestSolutions(t *testing.T) {
 		{&PrimeDigitReplacements{}, "121313"},
 		{&PermutedMultiples{}, "142857"},
 		{&CombinatoricSelections{}, "4075"},
-		// 376
+		{&PokerHands{pokerFile: "testdata/p054_poker.txt"}, "376"},
 	}
 
 	found := false
