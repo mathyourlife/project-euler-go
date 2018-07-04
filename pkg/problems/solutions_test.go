@@ -65,6 +65,7 @@ func TestSolutions(t *testing.T) {
 		{&PermutedMultiples{}, "142857"},
 		{&CombinatoricSelections{}, "4075"},
 		{&PokerHands{pokerFile: "testdata/p054_poker.txt"}, "376"},
+		{&LychrelNumbers{}, ""},
 	}
 
 	found := false
