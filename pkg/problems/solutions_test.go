@@ -67,6 +67,7 @@ func TestSolutions(t *testing.T) {
 		{&PokerHands{pokerFile: "testdata/p054_poker.txt"}, "376"},
 		{&LychrelNumbers{}, "249"},
 		{&PowerfulDigitSum{}, "972"},
+		{&SquareRootConvergents{}, "153"},
 	}
 
 	found := false
