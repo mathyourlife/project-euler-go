@@ -68,6 +68,7 @@ func TestSolutions(t *testing.T) {
 		{&LychrelNumbers{}, "249"},
 		{&PowerfulDigitSum{}, "972"},
 		{&SquareRootConvergents{}, "153"},
+		{&SpiralPrimes{}, "26241"},
 	}
 
 	found := false
