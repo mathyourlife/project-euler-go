@@ -69,6 +69,7 @@ func TestSolutions(t *testing.T) {
 		{&PowerfulDigitSum{}, "972"},
 		{&SquareRootConvergents{}, "153"},
 		{&SpiralPrimes{}, "26241"},
+		{&XORDecryption{cipherFile: "testdata/p059_cipher.txt"}, "107359"},
 	}
 
 	found := false
