@@ -65,6 +65,11 @@ func TestSolutions(t *testing.T) {
 		{&PermutedMultiples{}, "142857"},
 		{&CombinatoricSelections{}, "4075"},
 		{&PokerHands{pokerFile: "testdata/p054_poker.txt"}, "376"},
+		{&LychrelNumbers{}, "249"},
+		{&PowerfulDigitSum{}, "972"},
+		{&SquareRootConvergents{}, "153"},
+		{&SpiralPrimes{}, "26241"},
+		{&XORDecryption{cipherFile: "testdata/p059_cipher.txt"}, "107359"},
 	}
 
 	found := false
