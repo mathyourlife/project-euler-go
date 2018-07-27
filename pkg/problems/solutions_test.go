@@ -71,6 +71,7 @@ func TestSolutions(t *testing.T) {
 		{&SpiralPrimes{}, "26241"},
 		{&XORDecryption{cipherFile: "testdata/p059_cipher.txt"}, "107359"},
 		{&PairPrimeSets{}, "26033"},
+		{&CyclicalFigurateNumbers{}, "wrong"},
 	}
 
 	found := false
