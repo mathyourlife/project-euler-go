@@ -9,13 +9,20 @@ type Vertex interface {
 	GetID() string
 	Equals(Vertex) bool
 
+	AddEdge(e Edge)
+	GetEdges(d EdgeDirection) []Edge
+
 	String() string
 }
 
 type Edge interface {
+	ID() string
 	X() Vertex
 	Y() Vertex
 	Direction() EdgeDirection
+
+	Get(prop string) interface{}
+	Set(prop string, val interface{})
 
 	String() string
 }
@@ -29,11 +36,26 @@ const (
 	EdgeDirectionBoth   EdgeDirection = EdgeDirectionFrom | EdgeDirectionTo
 )
 
+func (d EdgeDirection) String() string {
+	if d == EdgeDirectionTo {
+		return "->"
+	} else if d == EdgeDirectionFrom {
+		return "<-"
+	} else if d == EdgeDirectionBoth {
+		return "<->"
+	} else if d == EdgeDirectionEither {
+		return "-"
+	}
+	panic("unknown direction")
+}
+
 type Graph interface {
+	// Get the vertex x by ID
+	GetVertex(id string) Vertex
 	// Adds the vertex x, if it is not there
-	AddVertex(x Vertex)
+	AddVertex(x Vertex) Vertex
 	// GetVerticies Return the list of verticies in the graph
-	GetVerticies() []Vertex
+	GetVerticies() map[string]Vertex
 	// Adds the edge from the vertex x to the vertex y, if it is not there
 	AddEdge(x, y Vertex, d EdgeDirection) Edge
 	// Lists all vertices y such that there is an edge connecting x to
@@ -57,8 +79,17 @@ type Graph interface {
 }
 
 type vertex struct {
-	ID   string
-	Data map[string]interface{}
+	ID    string
+	Data  map[string]interface{}
+	edges map[string]Edge
+}
+
+func NewVertex(id string) Vertex {
+	return &vertex{
+		ID:    id,
+		Data:  map[string]interface{}{},
+		edges: map[string]Edge{},
+	}
 }
 
 func (v *vertex) GetID() string {
@@ -69,6 +100,27 @@ func (v *vertex) Equals(x Vertex) bool {
 	return v.ID == x.GetID()
 }
 
+func (v *vertex) GetEdges(d EdgeDirection) []Edge {
+	edges := []Edge{}
+	for _, e := range v.edges {
+		if (d == EdgeDirectionTo || d == EdgeDirectionBoth || d == EdgeDirectionEither) &&
+			e.Y().Equals(v) {
+			edges = append(edges, e)
+			continue
+		}
+		if (d == EdgeDirectionFrom || d == EdgeDirectionBoth || d == EdgeDirectionEither) &&
+			e.X().Equals(v) {
+			edges = append(edges, e)
+			continue
+		}
+	}
+	return edges
+}
+
+func (v *vertex) AddEdge(e Edge) {
+	v.edges[e.ID()] = e
+}
+
 func (v *vertex) String() string {
 	return v.ID
 }
@@ -77,6 +129,11 @@ type edge struct {
 	x         Vertex
 	y         Vertex
 	direction EdgeDirection
+	data      map[string]interface{}
+}
+
+func (e *edge) ID() string {
+	return e.String()
 }
 
 func (e *edge) X() Vertex {
@@ -87,19 +144,27 @@ func (e *edge) Y() Vertex {
 	return e.y
 }
 
+func (e *edge) Get(prop string) interface{} {
+	return e.data[prop]
+}
+
+func (e *edge) Set(prop string, val interface{}) {
+	e.data[prop] = val
+}
+
 func (e *edge) Direction() EdgeDirection {
 	return e.direction
 }
 
 func (e *edge) String() string {
 	if e.direction == EdgeDirectionTo {
-		return fmt.Sprintf("%s->%s", e.x, e.y)
+		return fmt.Sprintf("%s%s%s", e.x, e.Direction().String(), e.y)
 	} else if e.direction == EdgeDirectionFrom {
-		return fmt.Sprintf("%s<-%s", e.x, e.y)
+		return fmt.Sprintf("%s%s%s", e.x, e.Direction().String(), e.y)
 	} else if e.direction == EdgeDirectionBoth {
-		return fmt.Sprintf("%s<->%s", e.x, e.y)
+		return fmt.Sprintf("%s%s%s", e.x, e.Direction().String(), e.y)
 	} else if e.direction == EdgeDirectionEither {
-		return fmt.Sprintf("%s-%s", e.x, e.y)
+		return fmt.Sprintf("%s%s%s", e.x, e.Direction().String(), e.y)
 	}
 	return "uknown edge direction"
 }
@@ -111,44 +176,53 @@ func (e *edge) Equals(cmp Edge) bool {
 }
 
 type graph struct {
-	verticies []Vertex
-	edges     []Edge
+	verticies map[string]Vertex
+	edges     map[string]Edge
 }
 
 func NewGraph() *graph {
 	return &graph{
-		verticies: []Vertex{},
-		edges:     []Edge{},
+		verticies: map[string]Vertex{},
+		edges:     map[string]Edge{},
 	}
 }
 
-func (g *graph) AddVertex(x Vertex) {
+func (g *graph) GetVertex(id string) Vertex {
+	return g.verticies[id]
+}
+
+func (g *graph) AddVertex(x Vertex) Vertex {
 	for _, vertex := range g.verticies {
 		if vertex.Equals(x) {
-			return
+			return vertex
 		}
 	}
-	g.verticies = append(g.verticies, x)
+	g.verticies[x.GetID()] = x
+	return x
 }
 
-func (g *graph) GetVerticies() []Vertex {
+func (g *graph) GetVerticies() map[string]Vertex {
 	return g.verticies
 }
 
 func (g *graph) AddEdge(x, y Vertex, d EdgeDirection) Edge {
-	g.AddVertex(x)
-	g.AddVertex(y)
+	x = g.AddVertex(x)
+	y = g.AddVertex(y)
 	e := &edge{
 		x:         x,
 		y:         y,
 		direction: d,
+		data:      map[string]interface{}{},
 	}
 	for _, edge := range g.edges {
 		if e.Equals(edge) {
 			return edge
 		}
 	}
-	g.edges = append(g.edges, e)
+
+	x.AddEdge(e)
+	y.AddEdge(e)
+	g.edges[e.ID()] = e
 	return e
 }
 
