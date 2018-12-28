@@ -3,6 +3,7 @@ package problems
 import (
 	"fmt"
 	"log"
+	"strconv"
 )
 
 type CyclicalFigurateNumbers struct{}
@@ -204,6 +205,17 @@ func (p *CyclicalFigurateNumbers) preload() map[int]map[int][]int {
 	return sequences
 }
 
+func (p *CyclicalFigurateNumbers) pathToSolution(path []string) string {
+	solution := 0
+	for i := 0; i < len(path); i += 3 {
+		val, _ := strconv.Atoi(path[i+1])
+		solution += 100 * val
+		val, _ = strconv.Atoi(path[i+2])
+		solution += val
+	}
+	return fmt.Sprintf("%d", solution)
+}
+
 func (p *CyclicalFigurateNumbers) Solve() (string, error) {
 
 	sequences := p.preload()
@@ -283,7 +295,7 @@ func (p *CyclicalFigurateNumbers) Solve() (string, error) {
 
 					if len(newPath) == target && newPath[len(newPath)-1] == newPath[1] {
 						log.Printf("FOUND IT: %s", newPath)
-						return "0", nil
+						return p.pathToSolution(newPath), nil
 					}
 					newPaths = append(newPaths, newPath)
 				}
