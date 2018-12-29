@@ -73,6 +73,7 @@ func TestSolutions(t *testing.T) {
 		{&PairPrimeSets{}, "26033"},
 		{&CyclicalFigurateNumbers{}, "28684"},
 		{&CubicPermutations{}, "127035954683"},
+		{&PowerfulDigitCounts{}, "49"},
 	}
 
 	found := false
