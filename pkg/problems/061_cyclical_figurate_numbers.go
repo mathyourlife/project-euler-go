@@ -148,30 +148,31 @@ func (p *CyclicalFigurateNumbers) generateNextHop(path []string, pn int, edge Ed
 	}
 }
 
-func (p *CyclicalFigurateNumbers) nextHop(target int, g Graph, paths [][]string) ([][]string, string, error) {
+func (p *CyclicalFigurateNumbers) processEdge(edge Edge, path []string, v Vertex) [][]string {
+	newPaths := [][]string{}
+	pns := edge.Get("pn").(map[int]bool)
+	for pn, _ := range pns {
+		next := p.generateNextHop(path, pn, edge, v)
+		if next == nil {
+			continue
+		}
+		newPath := append(path, next...)
+		newPaths = append(newPaths, newPath)
+	}
+	return newPaths
+}
+
+func (p *CyclicalFigurateNumbers) nextHop(g Graph, paths [][]string) [][]string {
 	newPaths := [][]string{}
 	for _, path := range paths {
 		v := g.GetVertex(path[len(path)-1])
 		edges := v.GetEdges(EdgeDirectionFrom)
 		log.Printf("for path %v there are %d edges from vertex %s", path, len(edges), v)
 		for _, edge := range edges {
-			pns := edge.Get("pn").(map[int]bool)
-			for pn, _ := range pns {
-				next := p.generateNextHop(path, pn, edge, v)
-				if next == nil {
-					continue
-				}
-				newPath := append(path, next...)
-
-				if len(newPath) == target && newPath[len(newPath)-1] == newPath[1] {
-					log.Printf("FOUND IT: %s", newPath)
-					return nil, p.pathToSolution(newPath), nil
-				}
-				newPaths = append(newPaths, newPath)
-			}
+			newPaths = append(newPaths, p.processEdge(edge, path, v)...)
 		}
 	}
-	return newPaths, "", nil
+	return newPaths
 }
 
 func (p *CyclicalFigurateNumbers) Solve() (string, error) {
@@ -183,9 +184,12 @@ func (p *CyclicalFigurateNumbers) Solve() (string, error) {
 	target := len(sequences) * 3
 
 	for {
-		newPaths, solution, err := p.nextHop(target, g, paths)
-		if solution != "" {
-			return solution, err
+		newPaths := p.nextHop(g, paths)
+		for _, newPath := range newPaths {
+			if len(newPath) == target && newPath[len(newPath)-1] == newPath[1] {
+				log.Printf("FOUND IT: %s", newPath)
+				return p.pathToSolution(newPath), nil
+			}
 		}
 		if len(newPaths) == 0 {
 			log.Printf("error: no valid paths remain")
