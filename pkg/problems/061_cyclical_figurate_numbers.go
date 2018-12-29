@@ -112,6 +112,9 @@ func (p *CyclicalFigurateNumbers) loadGraph(sequences map[int]map[int][]int) Gra
 func (p *CyclicalFigurateNumbers) initializePaths(g Graph, sequences map[int]map[int][]int) [][]string {
 	paths := [][]string{}
 	for pn, sequence := range sequences {
+		if pn != 8 {
+			continue
+		}
 		for branch, leaves := range sequence {
 			for _, leaf := range leaves {
 				paths = append(paths, []string{
@@ -126,32 +129,39 @@ func (p *CyclicalFigurateNumbers) initializePaths(g Graph, sequences map[int]map
 	return paths
 }
 
+func (p *CyclicalFigurateNumbers) generateNextHop(path []string, pn int, edge Edge, v Vertex) []string {
+	pnUsed := false
+	for idx := 0; idx < len(path); idx += 3 {
+		if path[idx] == fmt.Sprintf("%d", pn) {
+			log.Printf("skipping pn=%d already used in path %s", pn, path)
+			pnUsed = true
+			break
+		}
+	}
+	if pnUsed {
+		return nil
+	}
+	id := edge.Y().GetID()
+	log.Printf("adding next hop %s -> %s", v, id)
+	return []string{
+		fmt.Sprintf("%d", pn), v.GetID(), id,
+	}
+}
+
 func (p *CyclicalFigurateNumbers) nextHop(target int, g Graph, paths [][]string) ([][]string, string, error) {
 	newPaths := [][]string{}
-	for j, _ := range paths {
-		v := g.GetVertex(paths[j][len(paths[j])-1])
+	for _, path := range paths {
+		v := g.GetVertex(path[len(path)-1])
 		edges := v.GetEdges(EdgeDirectionFrom)
-		log.Printf("for path %v there are %d edges from vertex %s", paths[j], len(edges), v)
-		for k, _ := range edges {
-			pns := edges[k].Get("pn").(map[int]bool)
+		log.Printf("for path %v there are %d edges from vertex %s", path, len(edges), v)
+		for _, edge := range edges {
+			pns := edge.Get("pn").(map[int]bool)
 			for pn, _ := range pns {
-				pnUsed := false
-				for idx := 0; idx < len(paths[j]); idx += 3 {
-					if paths[j][idx] == fmt.Sprintf("%d", pn) {
-						log.Printf("skipping pn=%d already used in path %s", pn, paths[j])
-						pnUsed = true
-						break
-					}
-				}
-				if pnUsed {
+				next := p.generateNextHop(path, pn, edge, v)
+				if next == nil {
 					continue
 				}
-				id := edges[k].Y().GetID()
-				next := []string{
-					fmt.Sprintf("%d", pn), v.GetID(), id,
-				}
-				newPath := append(paths[j], next...)
-				log.Printf("adding next hop %s -> %s", v, id)
+				newPath := append(path, next...)
 
 				if len(newPath) == target && newPath[len(newPath)-1] == newPath[1] {
 					log.Printf("FOUND IT: %s", newPath)
