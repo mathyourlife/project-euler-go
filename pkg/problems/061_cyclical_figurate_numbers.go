@@ -133,7 +133,7 @@ func (p *CyclicalFigurateNumbers) generateNextHop(path []string, pn int, edge Ed
 	pnUsed := false
 	for idx := 0; idx < len(path); idx += 3 {
 		if path[idx] == fmt.Sprintf("%d", pn) {
-			log.Printf("skipping pn=%d already used in path %s", pn, path)
+			// log.Printf("skipping pn=%d already used in path %s", pn, path)
 			pnUsed = true
 			break
 		}
@@ -142,7 +142,7 @@ func (p *CyclicalFigurateNumbers) generateNextHop(path []string, pn int, edge Ed
 		return nil
 	}
 	id := edge.Y().GetID()
-	log.Printf("adding next hop %s -> %s", v, id)
+	// log.Printf("adding next hop %s -> %s", v, id)
 	return []string{
 		fmt.Sprintf("%d", pn), v.GetID(), id,
 	}
@@ -162,12 +162,12 @@ func (p *CyclicalFigurateNumbers) processEdge(edge Edge, path []string, v Vertex
 	return newPaths
 }
 
-func (p *CyclicalFigurateNumbers) nextHop(g Graph, paths [][]string) [][]string {
+func (p *CyclicalFigurateNumbers) expandPaths(g Graph, paths [][]string) [][]string {
 	newPaths := [][]string{}
 	for _, path := range paths {
 		v := g.GetVertex(path[len(path)-1])
 		edges := v.GetEdges(EdgeDirectionFrom)
-		log.Printf("for path %v there are %d edges from vertex %s", path, len(edges), v)
+		// log.Printf("for path %v there are %d edges from vertex %s", path, len(edges), v)
 		for _, edge := range edges {
 			newPaths = append(newPaths, p.processEdge(edge, path, v)...)
 		}
@@ -184,21 +184,18 @@ func (p *CyclicalFigurateNumbers) Solve() (string, error) {
 	target := len(sequences) * 3
 
 	for {
-		newPaths := p.nextHop(g, paths)
+		newPaths := p.expandPaths(g, paths)
 		for _, newPath := range newPaths {
 			if len(newPath) == target && newPath[len(newPath)-1] == newPath[1] {
 				log.Printf("FOUND IT: %s", newPath)
 				return p.pathToSolution(newPath), nil
 			}
 		}
-		if len(newPaths) == 0 {
+		if len(newPaths) == 0 || len(newPaths[0]) == target {
 			log.Printf("error: no valid paths remain")
 			return "0", nil
 		}
 		log.Printf("%d valid paths remaining", len(newPaths))
-		for _, path := range newPaths {
-			log.Println(path)
-		}
 		paths = newPaths
 	}
 }
