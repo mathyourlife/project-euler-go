@@ -72,6 +72,8 @@ func TestSolutions(t *testing.T) {
 		{&XORDecryption{cipherFile: "testdata/p059_cipher.txt"}, "107359"},
 		{&PairPrimeSets{}, "26033"},
 		{&CyclicalFigurateNumbers{}, "28684"},
+		{&CubicPermutations{}, "127035954683"},
+		{&PowerfulDigitCounts{}, "49"},
 	}
 
 	found := false
