@@ -6,7 +6,11 @@ import (
 	"strconv"
 )
 
-type CyclicalFigurateNumbers struct{}
+type CyclicalFigurateNumbers struct {
+	paths     chan []string
+	targetLen int
+	solution  chan []string
+}
 
 func (p *CyclicalFigurateNumbers) ID() int {
 	return 61
@@ -41,7 +45,7 @@ number in the set.
 `
 }
 
-func (p *CyclicalFigurateNumbers) preload() map[int]map[int][]int {
+func (p *CyclicalFigurateNumbers) generateSequences() map[int]map[int][]int {
 
 	sequences := map[int]map[int][]int{}
 	for pn := 3; pn <= 8; pn++ {
@@ -109,15 +113,13 @@ func (p *CyclicalFigurateNumbers) loadGraph(sequences map[int]map[int][]int) Gra
 	return g
 }
 
-func (p *CyclicalFigurateNumbers) initializePaths(g Graph, sequences map[int]map[int][]int) [][]string {
-	paths := [][]string{}
+func (p *CyclicalFigurateNumbers) initializePaths(g Graph, sequences map[int]map[int][]int) {
 	for pn, sequence := range sequences {
-		if pn != 8 {
-			continue
-		}
 		for branch, leaves := range sequence {
 			for _, leaf := range leaves {
-				paths = append(paths, []string{
+				go func(path []string) {
+					p.paths <- path
+				}([]string{
 					fmt.Sprintf("%d", pn),
 					g.GetVertex(fmt.Sprintf("%d", branch)).GetID(),
 					g.GetVertex(fmt.Sprintf("%d", leaf)).GetID(),
@@ -126,7 +128,6 @@ func (p *CyclicalFigurateNumbers) initializePaths(g Graph, sequences map[int]map
 		}
 		break
 	}
-	return paths
 }
 
 func (p *CyclicalFigurateNumbers) generateNextHop(path []string, pn int, edge Edge, v Vertex) []string {
@@ -148,8 +149,8 @@ func (p *CyclicalFigurateNumbers) generateNextHop(path []string, pn int, edge Ed
 	}
 }
 
-func (p *CyclicalFigurateNumbers) processEdge(edge Edge, path []string, v Vertex) [][]string {
-	newPaths := [][]string{}
+func (p *CyclicalFigurateNumbers) processEdge(edge Edge, path []string, v Vertex) bool {
+	log.Println("processing edge", edge)
 	pns := edge.Get("pn").(map[int]bool)
 	for pn, _ := range pns {
 		next := p.generateNextHop(path, pn, edge, v)
@@ -157,45 +158,48 @@ func (p *CyclicalFigurateNumbers) processEdge(edge Edge, path []string, v Vertex
 			continue
 		}
 		newPath := append(path, next...)
-		newPaths = append(newPaths, newPath)
+		log.Println("generated new path", newPath)
+		if len(newPath) == p.targetLen && newPath[len(newPath)-1] == newPath[1] {
+			log.Println("Found it", newPath)
+			p.solution <- newPath
+			return true
+		}
+		go func(path []string) {
+			p.paths <- path
+		}(newPath)
 	}
-	return newPaths
+	return false
 }
 
-func (p *CyclicalFigurateNumbers) expandPaths(g Graph, paths [][]string) [][]string {
-	newPaths := [][]string{}
-	for _, path := range paths {
+func (p *CyclicalFigurateNumbers) processPaths(g Graph) {
+	for path := range p.paths {
+		log.Println("processing path", path)
 		v := g.GetVertex(path[len(path)-1])
 		edges := v.GetEdges(EdgeDirectionFrom)
 		// log.Printf("for path %v there are %d edges from vertex %s", path, len(edges), v)
 		for _, edge := range edges {
-			newPaths = append(newPaths, p.processEdge(edge, path, v)...)
+			if p.processEdge(edge, path, v) {
+				return
+			}
 		}
 	}
-	return newPaths
 }
 
 func (p *CyclicalFigurateNumbers) Solve() (string, error) {
 
-	sequences := p.preload()
+	p.paths = make(chan []string)
+	p.solution = make(chan []string)
+
+	sequences := p.generateSequences()
+	p.targetLen = len(sequences) * 3
+
 	g := p.loadGraph(sequences)
-	paths := p.initializePaths(g, sequences)
 
-	target := len(sequences) * 3
+	p.initializePaths(g, sequences)
 
-	for {
-		newPaths := p.expandPaths(g, paths)
-		for _, newPath := range newPaths {
-			if len(newPath) == target && newPath[len(newPath)-1] == newPath[1] {
-				log.Printf("FOUND IT: %s", newPath)
-				return p.pathToSolution(newPath), nil
-			}
-		}
-		if len(newPaths) == 0 || len(newPaths[0]) == target {
-			log.Printf("error: no valid paths remain")
-			return "0", nil
-		}
-		log.Printf("%d valid paths remaining", len(newPaths))
-		paths = newPaths
-	}
+	go p.processPaths(g)
+
+	solution := p.pathToSolution(<-p.solution)
+
+	return solution, nil
 }

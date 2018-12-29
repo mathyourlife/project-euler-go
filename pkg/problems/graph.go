@@ -101,7 +101,7 @@ func (v *vertex) Equals(x Vertex) bool {
 }
 
 func (v *vertex) GetEdges(d EdgeDirection) []Edge {
-	edges := []Edge{}
+	var edges []Edge
 	for _, e := range v.edges {
 		if (d == EdgeDirectionTo || d == EdgeDirectionBoth || d == EdgeDirectionEither) &&
 			e.Y().Equals(v) {
@@ -123,6 +123,12 @@ func (v *vertex) AddEdge(e Edge) {
 
 func (v *vertex) String() string {
 	return v.ID
+}
+
+func newEdge() *edge {
+	return &edge{
+		data: map[string]interface{}{},
+	}
 }
 
 type edge struct {
@@ -208,12 +214,10 @@ func (g *graph) GetVerticies() map[string]Vertex {
 func (g *graph) AddEdge(x, y Vertex, d EdgeDirection) Edge {
 	x = g.AddVertex(x)
 	y = g.AddVertex(y)
-	e := &edge{
-		x:         x,
-		y:         y,
-		direction: d,
-		data:      map[string]interface{}{},
-	}
+	e := newEdge()
+	e.x = x
+	e.y = y
+	e.direction = d
 	for _, edge := range g.edges {
 		if e.Equals(edge) {
 			return edge
@@ -227,7 +231,7 @@ func (g *graph) AddEdge(x, y Vertex, d EdgeDirection) Edge {
 }
 
 func (g *graph) Neighbors(x Vertex, d EdgeDirection) []Vertex {
-	vs := []Vertex{}
+	var vs []Vertex
 
 	add := func(z Vertex) {
 		for _, v := range vs {
