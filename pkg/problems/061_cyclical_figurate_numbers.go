@@ -2,7 +2,6 @@ package problems
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 )
 
@@ -115,6 +114,9 @@ func (p *CyclicalFigurateNumbers) loadGraph(sequences map[int]map[int][]int) Gra
 
 func (p *CyclicalFigurateNumbers) initializePaths(g Graph, sequences map[int]map[int][]int) {
 	for pn, sequence := range sequences {
+		if pn != 8 {
+			continue
+		}
 		for branch, leaves := range sequence {
 			for _, leaf := range leaves {
 				go func(path []string) {
@@ -150,22 +152,23 @@ func (p *CyclicalFigurateNumbers) generateNextHop(path []string, pn int, edge Ed
 }
 
 func (p *CyclicalFigurateNumbers) processEdge(edge Edge, path []string, v Vertex) bool {
-	log.Println("processing edge", edge)
 	pns := edge.Get("pn").(map[int]bool)
 	for pn, _ := range pns {
 		next := p.generateNextHop(path, pn, edge, v)
 		if next == nil {
 			continue
 		}
-		newPath := append(path, next...)
-		log.Println("generated new path", newPath)
+		// Avoid race condition
+		tmp := make([]string, len(path))
+		copy(tmp, path)
+		newPath := append(tmp, next...)
 		if len(newPath) == p.targetLen && newPath[len(newPath)-1] == newPath[1] {
-			log.Println("Found it", newPath)
+			// Found the solutions
 			p.solution <- newPath
 			return true
 		}
-		go func(path []string) {
-			p.paths <- path
+		go func(pa []string) {
+			p.paths <- pa
 		}(newPath)
 	}
 	return false
@@ -173,7 +176,6 @@ func (p *CyclicalFigurateNumbers) processEdge(edge Edge, path []string, v Vertex
 
 func (p *CyclicalFigurateNumbers) processPaths(g Graph) {
 	for path := range p.paths {
-		log.Println("processing path", path)
 		v := g.GetVertex(path[len(path)-1])
 		edges := v.GetEdges(EdgeDirectionFrom)
 		// log.Printf("for path %v there are %d edges from vertex %s", path, len(edges), v)
@@ -187,7 +189,7 @@ func (p *CyclicalFigurateNumbers) processPaths(g Graph) {
 
 func (p *CyclicalFigurateNumbers) Solve() (string, error) {
 
-	p.paths = make(chan []string)
+	p.paths = make(chan []string, 100)
 	p.solution = make(chan []string)
 
 	sequences := p.generateSequences()
