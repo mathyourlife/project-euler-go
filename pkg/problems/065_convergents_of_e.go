@@ -2,7 +2,6 @@ package problems
 
 import (
 	"fmt"
-	"log"
 )
 
 type ConvergentsOfE struct{}
@@ -43,7 +42,7 @@ Find the sum of digits in the numerator of the 100th convergent of the continued
 
 func (p *ConvergentsOfE) Solve() (string, error) {
 
-	nth := 10
+	nth := 100
 
 	sequence := []int{2}
 	i := 2
@@ -63,15 +62,20 @@ func (p *ConvergentsOfE) Solve() (string, error) {
 		i += 2
 	}
 
-	num := 1
-	den := 0
+	num := NewBigInt(1)
+	den := NewBigInt(0)
 	for i := len(sequence) - 1; i >= 0; i-- {
 		num, den = den, num
 		s := sequence[i]
-		num += s * den
-		log.Println("s", s, "num", num, "den", den)
+		denCopy := den.Copy()
+		denCopy.Mul(s)
+		num.AddBigInt(denCopy)
+		num.Regroup()
 	}
-	log.Printf("%d/%d = %g", num, den, float64(num)/float64(den))
+	solution := 0
+	for _, n := range num.n {
+		solution += n
+	}
 
-	return fmt.Sprintf("%d", 0), nil
+	return fmt.Sprintf("%d", solution), nil
 }
