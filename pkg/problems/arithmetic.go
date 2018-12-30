@@ -44,6 +44,15 @@ func (b *BigInt) AddBigInt(n *BigInt) {
 	}
 }
 
+func (b *BigInt) Copy() *BigInt {
+	n := make([]int, len(b.n))
+	copy(n, b.n)
+	bigCopy := &BigInt{
+		n: n,
+	}
+	return bigCopy
+}
+
 func (b *BigInt) String() string {
 	b.Regroup()
 	s := ""

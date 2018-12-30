@@ -74,6 +74,8 @@ func TestSolutions(t *testing.T) {
 		{&CyclicalFigurateNumbers{}, "28684"},
 		{&CubicPermutations{}, "127035954683"},
 		{&PowerfulDigitCounts{}, "49"},
+		{&OddPeriodSquareRoots{}, "1322"},
+		{&ConvergentsOfE{}, "272"},
 	}
 
 	found := false
