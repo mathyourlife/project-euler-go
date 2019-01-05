@@ -76,6 +76,8 @@ func TestSolutions(t *testing.T) {
 		{&PowerfulDigitCounts{}, "49"},
 		{&OddPeriodSquareRoots{}, "1322"},
 		{&ConvergentsOfE{}, "272"},
+		{&DiophantineEquation{}, "wrong"},
+		{&MaximumPathSumII{gridFile: "testdata/p067_triangle.txt"}, "7273"},
 	}
 
 	found := false
