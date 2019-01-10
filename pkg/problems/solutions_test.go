@@ -78,6 +78,7 @@ func TestSolutions(t *testing.T) {
 		{&ConvergentsOfE{}, "272"},
 		{&DiophantineEquation{}, "661"},
 		{&MaximumPathSumII{gridFile: "testdata/p067_triangle.txt"}, "7273"},
+		{&Magic5GonRing{}, "6531031914842725"},
 	}
 
 	found := false
