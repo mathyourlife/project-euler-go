@@ -76,7 +76,7 @@ func TestSolutions(t *testing.T) {
 		{&PowerfulDigitCounts{}, "49"},
 		{&OddPeriodSquareRoots{}, "1322"},
 		{&ConvergentsOfE{}, "272"},
-		{&DiophantineEquation{}, "wrong"},
+		{&DiophantineEquation{}, "661"},
 	}
 
 	found := false

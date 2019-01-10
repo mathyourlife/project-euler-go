@@ -2,7 +2,6 @@ package problems
 
 import (
 	"fmt"
-	"log"
 	"math"
 )
 
@@ -37,99 +36,96 @@ value of x is obtained.
 `
 }
 
-func (p *DiophantineEquation) trial1() (string, error) {
-	var squares []uint64
-	isSquare := map[uint64]bool{}
-	minSolutions := map[uint64]uint64{}
-	maxD := uint64(60)
-	dCount := int(maxD - uint64(math.Sqrt(float64(maxD))))
+func (p *DiophantineEquation) next(n, i, b, c int) (int, int, int) {
+	m := (n - b*b) / c
+	d := (i + b) / m * m
 
-	for n := uint64(1); n < uint64(1000000); n++ {
-		squares = append(squares, n*n)
-		isSquare[n*n] = true
-	}
+	return (c * d) / (n - b*b), d - b, (n - b*b) / c
+}
 
-	found := 0
-	dx := make([]uint64, maxD+1)
-	for i := 0; i < len(dx); i++ {
-		if i*i < len(dx)-1 {
-			dx[i*i] = 1
-		}
-	}
-	for _, x2 := range squares {
-		if x2 == 1 {
-			continue
-		}
-		// log.Println("x2", x2)
-		for d, check := range dx {
-			if d == 0 || check != 0 {
-				continue
-			}
-			y2 := (x2 - 1) / uint64(d)
-			if x2/uint64(d) == 1 {
-				break
-			}
-			if isSquare[y2] && x2-uint64(d)*y2 == 1 {
-				found++
-				dx[d] = x2
-				log.Printf("%3d: %d - %dx%d = 1", d, x2, d, y2)
-			}
-		}
-		if x2 < maxD+1 && dx[x2-1] == 0 {
-			found++
-			d := x2 - 1
-			dx[d] = x2
-			log.Printf("%3d: %d - %dx%d = 1", d, x2, d, 1)
-		}
-		if found == dCount {
-			log.Println("found 'em")
+func (p *DiophantineEquation) getContinuedFraction(n int) (int, []int) {
+	parameters := map[string]bool{}
+	var i int
+	for i = 1; i < n/2; i++ {
+		if (i+1)*(i+1) > n {
 			break
 		}
 	}
-	log.Println(dx)
-	missed := 0
-	for _, x := range dx {
-		if x == 0 {
-			missed++
-		}
-	}
-	log.Println("missed", missed)
-	return "", nil
 
-	for i, x := range squares {
-		for j := i + 1; j < len(squares); j++ {
-			y := squares[j]
-			// log.Println(i, j, x, y)
-			if (y-1)%x == 0 {
-				D := (y - 1) / x
-				if D > maxD || minSolutions[D] > 0 {
-					break
-				}
-				minSolutions[D] = x
-				log.Printf("%d - %dx%d = 1", y, (y-1)/x, x)
-			}
-		}
-		if len(minSolutions) == dCount {
-			log.Println("found 'em")
+	var coeff []int
+	var a, b, c int
+
+	b = i
+	c = 1
+
+	for {
+		a, b, c = p.next(n, i, b, c)
+		if parameters[fmt.Sprintf("%d-%d", b, c)] {
 			break
 		}
+		parameters[fmt.Sprintf("%d-%d", b, c)] = true
+		coeff = append(coeff, a)
 	}
-	log.Println(len(minSolutions), minSolutions)
-	return "", nil
+	return i, coeff
 }
 
 func (p *DiophantineEquation) Solve() (string, error) {
-	d := 10
+	// Pell's Equation
+	// x^2 - n y^2 = 1
+	// where n is not a perfect square
+	//
+	// Joseph Louis Lagrange proved that, as long as n is not a perfect square,
+	// Pell's equation has infinitely many distinct integer solutions. These
+	// solutions may be used to accurately approximate the square root of n by
+	// rational numbers of the form x/y.
 
-	x := 1
-	for {
-		c := (x*x - 1)
-		if c%d != 0 {
+	target := NewBigInt(1)
+	maxX := NewBigInt(0)
+	solution := uint64(0)
+
+	for D := uint64(1); D <= uint64(1000); D++ {
+		if math.Pow(math.Round(math.Sqrt(float64(D))), 2) == float64(D) {
 			continue
 		}
-		c /= d
-		// math.Sqrt()
-		x++
+		i, coeff := p.getContinuedFraction(int(D))
+
+		j := 0
+		for {
+			x := NewBigInt(1)
+			y := NewBigInt(0)
+			var s int
+			for k := j; k >= 0; k-- {
+				x, y = y, x
+				if k == 0 {
+					s = i
+				} else {
+					s = coeff[(k-1)%len(coeff)]
+				}
+				yCopy := y.Copy()
+				yCopy.Mul(s)
+				x.AddBigInt(yCopy)
+				x.Regroup()
+			}
+
+			x2 := x.MulBigInt(x)
+			y2 := y.MulBigInt(y)
+
+			y2.Mul(int(D))
+			if x2.LessThan(y2) {
+				j++
+				continue
+			}
+			x2.SubBigInt(y2)
+
+			if x2.Equals(target) {
+				if maxX.LessThan(x) {
+					maxX = x
+					solution = D
+				}
+				break
+			}
+			j++
+		}
 	}
-	return fmt.Sprintf("%d", 0), nil
+	return fmt.Sprintf("%d", solution), nil
 }
