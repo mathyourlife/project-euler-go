@@ -4,9 +4,7 @@ import (
 	"fmt"
 )
 
-type TotientMaxium struct {
-	pfs map[uint64]map[uint64]int
-}
+type TotientMaxium struct{}
 
 func (p *TotientMaxium) ID() int {
 	return 69
