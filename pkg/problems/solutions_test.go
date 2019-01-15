@@ -79,6 +79,7 @@ func TestSolutions(t *testing.T) {
 		{&DiophantineEquation{}, "661"},
 		{&MaximumPathSumII{gridFile: "testdata/p067_triangle.txt"}, "7273"},
 		{&Magic5GonRing{}, "6531031914842725"},
+		{&TotientMaxium{}, "510510"},
 	}
 
 	found := false
