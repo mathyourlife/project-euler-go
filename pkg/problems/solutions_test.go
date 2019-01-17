@@ -81,6 +81,7 @@ func TestSolutions(t *testing.T) {
 		{&Magic5GonRing{}, "6531031914842725"},
 		{&TotientMaxium{}, "510510"},
 		{&TotientPermutation{}, "8319823"},
+		{&OrderedFractions{}, "428570"},
 	}
 
 	found := false
